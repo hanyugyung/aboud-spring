@@ -1,0 +1,7 @@
+server:
+  shutdown: graceful
+
+
+spring:
+  jpa:
+    open-session-in-view: false
