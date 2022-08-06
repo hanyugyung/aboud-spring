@@ -143,4 +143,38 @@ class MemberServiceTest {
         // list 1번 조회 쿼리, 각 team 에 속한 member list 를 가져오는 쿼리가 team list 크기만큼 실행
 
     }
+
+    @Test
+    @Transactional
+    void 다대일의_관계에서_n_plus_1_문제_해결_join_fetch() {
+
+        // given
+        Team team1 = createTeam("Team1");
+        Team team2 = createTeam("Team2");
+
+        createMember("member1", team1);
+        createMember("member2", team1);
+        createMember("member3", team2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        List<Member> memberList = memberRepository.findAllUsingJoinFetch();
+
+        // then
+        assertNotNull(memberList.get(0).getTeam().getName());
+        assertNotNull(memberList.get(1).getTeam().getName());
+
+        entityManager.clear();
+
+        // when
+        List<Team> teamList = teamRepository.findAllUsingJoinFetch();
+
+        // then
+        assertNotNull(teamList.get(0).getMemberList().get(0));
+        assertNotNull(teamList.get(1).getMemberList().get(0));
+
+        // join fetch 로 쿼리 한번에 가져옴. lazy 로딩보다 join fetch 가 우선순위
+    }
 }
