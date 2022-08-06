@@ -83,7 +83,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @Transactional // 영속성 사용 위해 트랜잭션 범위 잡아줌
+    @Transactional
+        // 영속성 사용 위해 트랜잭션 범위 잡아줌
     void 다대일의_관계에서_다_쪽에서의_n_plus_1_문제() {
 
         // 1 + n 만큼 쿼리 발생
@@ -114,7 +115,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @Transactional // 영속성 사용 위해 트랜잭션 범위 잡아줌
+    @Transactional
+        // 영속성 사용 위해 트랜잭션 범위 잡아줌
     void 다대일의_관계에서_일_쪽에서의_n_plus_1_문제() {
 
         // 1 + n 만큼 쿼리 발생
@@ -176,5 +178,33 @@ class MemberServiceTest {
         assertNotNull(teamList.get(1).getMemberList().get(0));
 
         // join fetch 로 쿼리 한번에 가져옴. lazy 로딩보다 join fetch 가 우선순위
+        // join fetch 는 기본이 inner join 발생
+    }
+
+    @Test
+    @Transactional
+    void 다대일의_관계에서_n_plus_1_문제_해결_EntityGraph() {
+
+        // given
+        Team team1 = createTeam("Team1");
+        Team team2 = createTeam("Team2");
+
+        createMember("member1", team1);
+        createMember("member2", team1);
+        createMember("member3", team2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        List<Member> memberList = memberRepository.findAll();
+
+        // then
+        assertNotNull(memberList.get(0).getTeam().getName());
+        assertNotNull(memberList.get(1).getTeam().getName());
+
+        // entity graph 로 쿼리 한번에 가져옴.
+        // left outer join 발생
+        // 조인 조건이 없는 경우 카테시안 곱(n행 * m행 로우 발생) 주의
     }
 }
