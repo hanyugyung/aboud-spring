@@ -1,4 +1,4 @@
-package example.practice.jpa.service.memer;
+package example.practice.jpa.service;
 
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;

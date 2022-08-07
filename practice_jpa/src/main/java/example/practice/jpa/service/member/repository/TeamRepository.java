@@ -1,6 +1,6 @@
-package example.practice.jpa.service.memer.repository;
+package example.practice.jpa.service.member.repository;
 
-import example.practice.jpa.service.memer.entity.Team;
+import example.practice.jpa.service.member.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

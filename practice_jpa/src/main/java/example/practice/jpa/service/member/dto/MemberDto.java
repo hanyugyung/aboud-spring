@@ -1,4 +1,4 @@
-package example.practice.jpa.service.memer.dto;
+package example.practice.jpa.service.member.dto;
 
 import lombok.Builder;
 import lombok.Getter;

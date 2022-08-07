@@ -1,7 +1,6 @@
-package example.practice.jpa.service.memer.entity;
+package example.practice.jpa.service.member.entity;
 
-import example.practice.jpa.service.memer.BaseEntity;
-import lombok.AccessLevel;
+import example.practice.jpa.service.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

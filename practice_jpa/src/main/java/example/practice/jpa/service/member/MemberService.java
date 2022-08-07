@@ -1,10 +1,9 @@
-package example.practice.jpa.service.memer;
+package example.practice.jpa.service.member;
 
-import example.practice.jpa.service.memer.dto.MemberDto;
-import example.practice.jpa.service.memer.entity.Member;
-import example.practice.jpa.service.memer.entity.Team;
-import example.practice.jpa.service.memer.repository.MemberRepository;
-import example.practice.jpa.service.memer.repository.TeamRepository;
+import example.practice.jpa.service.member.dto.MemberDto;
+import example.practice.jpa.service.member.entity.Member;
+import example.practice.jpa.service.member.repository.MemberRepository;
+import example.practice.jpa.service.member.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

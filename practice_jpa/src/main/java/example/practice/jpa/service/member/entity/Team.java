@@ -1,6 +1,6 @@
-package example.practice.jpa.service.memer.entity;
+package example.practice.jpa.service.member.entity;
 
-import example.practice.jpa.service.memer.BaseEntity;
+import example.practice.jpa.service.BaseEntity;
 import lombok.*;
 import org.springframework.util.StringUtils;
 
@@ -19,7 +19,7 @@ public class Team extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team")
     private List<Member> memberList = List.of();
 
     @Builder
