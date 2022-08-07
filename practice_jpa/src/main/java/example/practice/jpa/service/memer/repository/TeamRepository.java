@@ -10,4 +10,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Query("select t from Team t join fetch t.memberList")
     List<Team> findAllUsingJoinFetch();
+
+    @Query("select distinct t from Team t join fetch t.memberList")
+    List<Team> findAllUsingJoinFetchDistinct();
 }

@@ -115,8 +115,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @Transactional
-        // 영속성 사용 위해 트랜잭션 범위 잡아줌
+    @Transactional // 영속성 사용 위해 트랜잭션 범위 잡아줌
     void 다대일의_관계에서_일_쪽에서의_n_plus_1_문제() {
 
         // 1 + n 만큼 쿼리 발생
@@ -205,6 +204,35 @@ class MemberServiceTest {
 
         // entity graph 로 쿼리 한번에 가져옴.
         // left outer join 발생
-        // 조인 조건이 없는 경우 카테시안 곱(n행 * m행 로우 발생) 주의
+    }
+
+    @Test
+    void 다대일의_관계에서_n_plus_1_문제_해결_querydsl() {
+        // TODO querydsl 로 n+1 문제 해결 테스트 코드 작성
+    }
+
+    @Test
+    void 주의_다대일_일쪽에서_list_조회시_같은_엔티티_여러개_발생하는경우() {
+
+        // given
+        Team team1 = createTeam("Team1");
+        Team team2 = createTeam("Team2");
+
+        createMember("member1", team1);
+        createMember("member2", team1);
+        createMember("member3", team2);
+
+        // when
+        List<Team> teamList = teamRepository.findAllUsingJoinFetch();
+
+        // then
+        assertEquals(3, teamList.size()); // team 2개인데, list 사이즈는 3
+
+        // when
+        List<Team> teamList_Distinct = teamRepository.findAllUsingJoinFetchDistinct();
+
+        // then
+        assertEquals(2, teamList_Distinct.size());
+
     }
 }
