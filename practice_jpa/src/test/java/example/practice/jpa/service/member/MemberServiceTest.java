@@ -1,5 +1,6 @@
 package example.practice.jpa.service.member;
 
+import example.practice.jpa.service.member.dto.MemberDto;
 import example.practice.jpa.service.member.entity.Member;
 import example.practice.jpa.service.member.entity.Team;
 import example.practice.jpa.service.member.repository.MemberRepository;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,7 +57,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void Lazy_Initialization_Exception_발생_테스트() {
+    void lazy_Initialization_Exception_발생_테스트() {
 
         // given
         Team team = createTeam("team1");
@@ -71,5 +73,21 @@ class MemberServiceTest {
                 , () -> memberService.getMember(memberId).getTeam().getName());
 
         // 트랜잭션 범위 밖에서 프록시 Team 객체의 값 Name 참조하려고 했기 때문에 발생
+    }
+
+    @Test
+    void bookmark_생성_테스트() {
+
+        // given
+        Team team = createTeam("team1");
+        Member member = createMember("han60", team);
+
+        // when
+        memberService.createMemberBookmark(member.getId()
+                , MemberDto.BookmarkCommand.builder().title("title").content("content").build());
+
+        // then
+        assertEquals(1
+                , memberService.getMemberBookmarks(member.getId()).getBookmarkList().size());
     }
 }

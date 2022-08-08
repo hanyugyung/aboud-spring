@@ -1,13 +1,15 @@
 package example.practice.jpa.service.member;
 
 import example.practice.jpa.service.member.dto.MemberDto;
+import example.practice.jpa.service.member.entity.Bookmark;
 import example.practice.jpa.service.member.entity.Member;
 import example.practice.jpa.service.member.repository.MemberRepository;
-import example.practice.jpa.service.member.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -16,16 +18,14 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final TeamRepository teamRepository;
-
     @Transactional(readOnly = true)
-    public Member getMember(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Member Not Founded!"));
+    public Member getMember(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("Member Not Founded!"));
     }
 
     @Transactional(readOnly = true)
-    public MemberDto.MemberInfo getMemberInfo(Long id) {
-        Member member = memberRepository.findById(id)
+    public MemberDto.MemberInfo getMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member Not Founded!"));
 
         // FIXME mapstruct 로 변환
@@ -39,4 +39,16 @@ public class MemberService {
 
     }
 
+    @Transactional
+    public void createMemberBookmark(Long memberId, MemberDto.BookmarkCommand command){
+        Bookmark bookmark = command.toEntity();
+        Member member = getMember(memberId);
+        member.addMyBookmark(bookmark);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberDto.MemberBookmarkInfo getMemberBookmarks(Long memberId){
+        Member member = getMember(memberId);
+        return MemberDto.MemberBookmarkInfo.of(member);
+    }
 }

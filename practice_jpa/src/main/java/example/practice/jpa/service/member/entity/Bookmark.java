@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "bookmarks")
@@ -16,11 +17,21 @@ public class Bookmark extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String title;
 
-    private String contents;
+    private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Bookmark(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }
