@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "members")
@@ -27,11 +27,11 @@ public class Member extends BaseEntity {
     private Team team;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bookmark> bookmarkList = List.of();
+    private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Builder
     public Member(String name, Team team) {
-        if(!StringUtils.hasText(name)) throw new IllegalArgumentException();
+        if (!StringUtils.hasText(name)) throw new IllegalArgumentException();
         this.name = name;
         this.team = team;
     }
@@ -42,7 +42,7 @@ public class Member extends BaseEntity {
 
     public void addMyBookmark(Bookmark bookmark) {
         this.bookmarkList.add(bookmark);
-        bookmark.setMember(this);
+        bookmark.setMember(this); // 이 코드는 편의상 추가한 것, 영속성과 상관없음
     }
 
     public Bookmark findMyBookmark(Long bookmarkId) {
@@ -59,7 +59,7 @@ public class Member extends BaseEntity {
                 });
     }
 
-    public void deleteMyAllBookmark() {
+    public void deleteMyAllBookmarks() {
         this.bookmarkList.clear();
     }
 }

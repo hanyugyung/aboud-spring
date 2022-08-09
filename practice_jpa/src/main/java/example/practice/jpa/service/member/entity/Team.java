@@ -31,8 +31,4 @@ public class Team extends BaseEntity {
     public static Team of(String name) {
         return Team.builder().name(name).build();
     }
-
-    public void addMember(Member member) {
-        this.memberList.add(member);
-    }
 }

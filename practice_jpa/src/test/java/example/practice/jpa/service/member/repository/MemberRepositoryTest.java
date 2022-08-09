@@ -1,5 +1,6 @@
 package example.practice.jpa.service.member.repository;
 
+import example.practice.jpa.service.member.entity.Bookmark;
 import example.practice.jpa.service.member.entity.Member;
 import example.practice.jpa.service.member.entity.Team;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,9 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     private Team createTeam(String name) {
         return teamRepository.save(Team.of(name));
@@ -170,7 +174,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void 주의_다대일_일쪽에서_list_조회시_같은_엔티티_여러개_발생하는경우() {
+    void 주의_다대일_일쪽에서_list_조회시_같은_엔티티_여러개_발생하는경우_distinct_로해결() {
 
         // given
         Team team1 = createTeam("Team1");
@@ -184,7 +188,7 @@ class MemberRepositoryTest {
         List<Team> teamList = teamRepository.findAllUsingJoinFetch();
 
         // then
-        assertEquals(3, teamList.size()); // team 2개인데, list 사이즈는 3
+        assertEquals(3, teamList.size()); // team 2개인데, list 사이즈는 3(조인되면서 발생)
 
         // when
         List<Team> teamList_Distinct = teamRepository.findAllUsingJoinFetchDistinct();
@@ -192,4 +196,49 @@ class MemberRepositoryTest {
         // then
         assertEquals(2, teamList_Distinct.size());
     }
+
+    @Test
+    void cascade_remove_테스트_부모객체_삭제시_자식객체도_삭제() {
+
+        // given
+        Team team = createTeam("team1");
+        Member member = createMember("han60", team);
+        member.addMyBookmark(new Bookmark("Tile1", "Content1"));
+        member.addMyBookmark(new Bookmark("Tile2", "Content2"));
+
+        // when
+//        Optional<Member> optionalMember = memberRepository.findById(member.getId());
+//        assertEquals(2, optionalMember.get().getBookmarkList().size());
+//
+//        memberRepository.delete(optionalMember.get());
+
+        memberRepository.delete(member); // delete 하기 전에 flush
+
+        // then
+        assertEquals(0, bookmarkRepository.findAll().size());
+
+        // 부모객체(member) 자체를 삭제하기 때문에 cascade remove 속성으로 자식객체 삭제,
+        // 고아객체 true 속성과 관계없음
+    }
+
+    @Test
+    void 부모객체와_연관관계_끊기면_고아객체_삭제_테스트() {
+
+        // given
+        Team team = createTeam("team1");
+        Member member = Member.of("han60", team);
+        member.addMyBookmark(new Bookmark("Tile1", "Content1"));
+        member.addMyBookmark(new Bookmark("Tile2", "Content2"));
+
+        memberRepository.save(member);
+
+        // when
+        member.deleteMyAllBookmarks();
+
+        // then
+        memberRepository.findById(member.getId());
+        assertEquals(0, member.getBookmarkList().size());
+
+    }
+
 }
