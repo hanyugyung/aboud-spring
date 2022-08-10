@@ -40,6 +40,10 @@ public class Member extends BaseEntity {
         return Member.builder().name(name).team(team).build();
     }
 
+    public void editName(String name) {
+        this.name = name;
+    }
+
     public void addMyBookmark(Bookmark bookmark) {
         this.bookmarkList.add(bookmark);
         bookmark.setMember(this); // 이 코드는 편의상 추가한 것, 영속성과 상관없음

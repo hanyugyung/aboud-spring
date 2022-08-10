@@ -3,6 +3,7 @@ package example.practice.jpa.service.member.repository;
 import example.practice.jpa.service.member.entity.Bookmark;
 import example.practice.jpa.service.member.entity.Member;
 import example.practice.jpa.service.member.entity.Team;
+import example.practice.jpa.service.member.entity.projection.MemberProjection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -241,4 +241,39 @@ class MemberRepositoryTest {
 
     }
 
+    @Test
+    @Transactional
+    void native_Query_로_가져온_엔티티객체도_영속화가_된다() {
+
+        // given
+        Team team = createTeam("team1");
+        Member member = createMember("han60", team);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        Member getMember = memberRepository.findByIdDirectly(member.getId());
+
+        // then
+        assertTrue(entityManager.contains(getMember));
+    }
+
+    @Test
+    @Transactional
+    void native_Query_로_가져온_프로젝션은_영속화가_되지않는다() {
+
+        // given
+        Team team = createTeam("team1");
+        Member member = createMember("han60", team);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // when, then
+        MemberProjection memberProjection = memberRepository.getMemberIdAndTeamIdById(member.getId());
+        memberRepository.getMemberIdAndTeamIdById(member.getId()); // 호출하는대로 쿼리나감, 영속화 x
+
+        // entityManager.contains(memberProjection) 에서 memberProjection 은 엔티티가 아니기 때문에 런타임 에러 발생
+    }
 }
