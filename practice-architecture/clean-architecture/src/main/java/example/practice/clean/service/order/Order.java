@@ -44,4 +44,9 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItemList = List.of();
 
+    public void payComplete() { // 엔티티 내부 규칙
+        this.orderStatus = OrderStatus.PAY_COMPLETE;
+    }
+
+
 }
