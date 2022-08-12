@@ -1,16 +1,47 @@
 package example.practice.clean.service.order;
 
 import example.practice.clean.service.BaseEntity;
+import example.practice.clean.service.order.item.OrderItem;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor
 public class Order extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Column(name = "user_id")
+    private Long userId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
+
+    @Getter
+    @AllArgsConstructor
+    public enum OrderStatus {
+        WAIT("입금대기중")
+        , PAY_COMPLETE("결제완료")
+        , DELIVERY_PREPARE("배송준비중")
+        , IN_DELIVERY("배송중")
+        , DELIVERY_COMPLETE("배송완료");
+
+        private final String description;
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+    private List<OrderItem> orderItemList = List.of();
 
 }
