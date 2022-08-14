@@ -16,4 +16,8 @@
 * lazy initialization exception - no session
 * native query 로 select 하는 경우도 영속화가 되는지?
 
+-------------------------
+
+#### Clean / Hexagonal Architecture
+> 클린 아키텍처와 헥사고날 아키텍처에 대해 공부하고, 어떤 점이 다른지 등 공부한 내용을 샘플 코드로 구현해보고자 합니다.
 
