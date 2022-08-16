@@ -1,0 +1,4 @@
+rootProject.name = 'practice-architecture'
+include 'hexagonal-architecture'
+include 'clean-architecture'
+
