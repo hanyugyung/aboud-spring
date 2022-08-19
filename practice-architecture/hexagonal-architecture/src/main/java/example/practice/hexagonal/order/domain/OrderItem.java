@@ -3,6 +3,7 @@ package example.practice.hexagonal.order.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
