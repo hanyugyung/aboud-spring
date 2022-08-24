@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.17.5'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor(
+            'org.projectlombok:lombok:1.18.24'
+    )
+
+    // https://mvnrepository.com/artifact/it.ozimov/embedded-redis
+    testImplementation 'it.ozimov:embedded-redis:0.7.3'
+
+}
+
+test {
+    useJUnitPlatform()
+}
