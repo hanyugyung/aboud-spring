@@ -1,10 +1,11 @@
 package example.practice.hexagonal.order.domain;
 
-import example.practice.clean.service.BaseEntity;
+import example.practice.hexagonal.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class Order extends BaseEntity {
         , PAY_COMPLETE("결제완료")
         , DELIVERY_PREPARE("배송준비중")
         , IN_DELIVERY("배송중")
-        , DELIVERY_COMPLETE("배송완료");
+        , DELIVERY_COMPLETE("배송완료")
+        , CANCELED("주문취소");
 
         private final String description;
     }
@@ -47,4 +49,23 @@ public class Order extends BaseEntity {
     }
 
 
+    /**
+     * 주문을 취소한다
+     * 배송중, 배송완료 시 throw IllegalStateException
+     */
+    public void cancelOrder() {
+        if (this.orderStatus == OrderStatus.IN_DELIVERY || this.orderStatus == OrderStatus.DELIVERY_COMPLETE) {
+            throw new IllegalStateException("상품을 취소할 수 없습니다.");
+        }
+        this.orderStatus = OrderStatus.CANCELED;
+    }
+
+    /**
+     * 주문 상품들의 총 금액을 계산한다
+     *
+     * @return
+     */
+    public long calculateAmountOfOrder() {
+        return this.orderItemList.stream().mapToLong(oi -> oi.getCount() * oi.getItemPrice()).sum();
+    }
 }
