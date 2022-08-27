@@ -21,8 +21,10 @@ dependencies {
             'org.projectlombok:lombok:1.18.24'
     )
 
-    // https://mvnrepository.com/artifact/it.ozimov/embedded-redis
-    testImplementation 'it.ozimov:embedded-redis:0.7.3'
+//    // https://mvnrepository.com/artifact/it.ozimov/embedded-redis
+    implementation('it.ozimov:embedded-redis:0.7.3') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 
 }
 
