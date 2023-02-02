@@ -20,7 +20,11 @@
 
 #### Clean / Hexagonal Architecture
 > 클린 아키텍처와 헥사고날 아키텍처에 대해 공부하고, 어떤 점이 다른지 등 공부한 내용을 샘플 코드로 구현해보고자 합니다.
-
+* 제가 이해한 레이어드, 클린, 헥사고날 아키텍처의 차이입니다.(틀리거나 보완할 점을 알게 되면 수정하겠습니다.)
+    * 클린 아키텍처와 헥사고날 아키텍처, 레이어드 아키텍처를 가르는 핵심은 인터페이스를 어느 계층에 두느냐? 입니다.
+    * 레이어드 아키텍처는 Presentaion / Application / Persistence 패키지 내에 각 기능(구현체)와 해당 기능의 인터페이스가 같은 계층에 위치합니다. 즉, 의존도가 Presentation -> Application -> Persistence 방향으로 흐르게 되어, 하위 계층이 변경되게 되면 상위 계층도 같이 변경될 확률이 높습니다. 또한 도메인이 아닌 각 역할에 따라 패키지를 구성하게 되기 때문에 도메인이 변경되는 경우 각 계층 별로 변경해야 하기 때문에 변경해야할 코드량이 많아집니다.(상위가 하위 계층에 의존도가 높음)
+    * 클린 아키텍처는 각 도메인 별 Presentation / (Facade) / Application(UseCase) / Persistence 패키지를 가지고 있고, 패키지 구조는 레이어드 아키텍처와 비슷한 듯 하지만, Application 에 Persistence 가 구현해야할 인터페이스를 두어 Application -> Persistence 로의 의존방향이 아닌, Application <- Persistence 의 의존 관계로 역전이 되게 됩니다.(DIP) 그렇게 되면, Persistence 에서의 구현체가 변경되어도 그 위의 계층인 Application 는 변경될 필요가 없어집니다.
+    * 헥사고날 아키텍처에서는 Adapter / Application / Domain 
 -------------------------
 
 #### 레디스 분산락을 이용한 동시성처리
