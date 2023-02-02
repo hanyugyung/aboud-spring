@@ -24,7 +24,7 @@
     * 클린 아키텍처와 헥사고날 아키텍처, 레이어드 아키텍처를 가르는 핵심은 인터페이스를 어느 계층에 두느냐? 입니다.
     * 레이어드 아키텍처는 Presentaion / Application / Persistence 패키지 내에 각 기능(구현체)와 해당 기능의 인터페이스가 같은 계층에 위치합니다. 즉, 의존도가 Presentation -> Application -> Persistence 방향으로 흐르게 되어, 하위 계층이 변경되게 되면 상위 계층도 같이 변경될 확률이 높습니다. 또한 도메인이 아닌 각 역할에 따라 패키지를 구성하게 되기 때문에 도메인이 변경되는 경우 각 계층 별로 변경해야 하기 때문에 변경해야할 코드량이 많아집니다.(상위가 하위 계층에 의존도가 높음)
     * 클린 아키텍처는 각 도메인 별 Presentation / (Facade) / Application(UseCase) / Persistence 패키지를 가지고 있고, 패키지 구조는 레이어드 아키텍처와 비슷한 듯 하지만, Application 에 Persistence 가 구현해야할 인터페이스를 두어 Application -> Persistence 로의 의존방향이 아닌, Application <- Persistence 의 의존 관계로 역전이 되게 됩니다.(DIP) 그렇게 되면, Persistence 에서의 구현체가 변경되어도 그 위의 계층인 Application 는 변경될 필요가 없어집니다.
-    * 헥사고날 아키텍처에서는 Adapter / Application / Domain 
+    * 헥사고날 아키텍처에서는 Adapter / Application / Domain 패키지로 구성되고, Adapter 패키지에는 ApiController, Event Handler, DB 등 변하기 쉬운 외부 영역의 기능이 있습니다. ApiController 는 In-Adapter, DB, EventHandler 등은 Out-Adapter 로 나뉘어 집니다. Application 패키지는 내부 주요 비즈니스로직과 Application > Port 라고하는 패키지 하위에 이 Adapter 들의 인터페이스를 둡니다. 이렇게 되면, 변하기 쉬운 외부 영역이 변경되어야할 때 Adapter 에서의 구현체만 변경하면 되고, Application 내부에는 영향을 주지 않게 됩니다.
 -------------------------
 
 #### 레디스 분산락을 이용한 동시성처리
@@ -35,4 +35,6 @@
 
 -------------------------
 #### 스프링부트 웹소켓 기본 예제
-> Stomp, SockJs 사용하지 않은 기본 웹소켓 예제 작성
+
+
+-------------------------
