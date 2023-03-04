@@ -13,6 +13,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * sockJs 는 웹소켓을 지원하지 않는 브라우저를 위한 자바스크립트 라이브러리이다.
+ * 서버에서 stomp 프로토콜을 사용하려면 클라이언트도 stomp js 를 써야한다.
+ */
+
 @Configuration
 @EnableWebSocketMessageBroker
 //@RequiredArgsConstructor
@@ -23,12 +28,13 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/ws");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat")
-                .addInterceptors(handshakeInterceptor()).withSockJS();
+        registry.addEndpoint("/ws");
+                //.addInterceptors(handshakeInterceptor())
+                //.setHandshakeHandler(); //.withSockJS();
     }
 
     public void configureClientInboundChannel(ChannelRegistration registration) {
