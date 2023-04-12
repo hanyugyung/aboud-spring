@@ -44,3 +44,13 @@
 * Tus 프로토콜이란? 
    * 재개 가능한 업로드를 위해 개발된 HTTP 기반 오픈 프로토콜
    * 파일을 청크 단위로 잘라서 업로드하기 때문에 대용량 파일 업로드에 적합
+   
+-------------------------
+#### 스프링부트 Graphql
+> 스프링부트 Graphql 예제 작성
+
+* Rest API 와의 차이
+   * Rest API 는 http url 로 자원을 명시하고, method 로 CRUD 오퍼레이션을 적용하는 반면, /graphql 라는 엔드포인트 하나만 존재함.
+      * Query(조회), Mutation(생성, 수정, 삭제) 로 구분된 쿼리만 존재
+   * Rest API 의 over-fetching, under-fetching 문제 해결
+      * over-fetching: 필요 이상의 자원을 가져오는 것 / under-fetching: 필요한 자원을 충분히 가져오지 못하는 것
