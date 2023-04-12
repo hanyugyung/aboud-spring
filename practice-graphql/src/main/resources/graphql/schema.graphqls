@@ -1,0 +1,18 @@
+type Query {
+    getListOrder: [GetOrderResponseDto]
+}
+
+type Mutation {
+    createOrder(dto: CreateOrderRequestDto!): Int!
+}
+
+type GetOrderResponseDto {
+    id: ID!
+    productId: Int!
+    count: Int
+}
+
+input CreateOrderRequestDto {
+    productId: Int!
+    count: Int
+}
