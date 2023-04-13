@@ -54,3 +54,10 @@
       * Query(조회), Mutation(생성, 수정, 삭제) 로 구분된 쿼리만 존재
    * Rest API 의 over-fetching, under-fetching 문제 해결
       * over-fetching: 필요 이상의 자원을 가져오는 것 / under-fetching: 필요한 자원을 충분히 가져오지 못하는 것
+      
+-------------------------
+#### 스프링부트 event
+> 스프링부트 event handling, 사용자 가입 및 안내 메일 발송 예제 작성
+
+* 사용자 도메인, 안내 메일 도메인 간 결합도를 줄일 수 있다
+* 비동기로 이벤트 처리 가능
