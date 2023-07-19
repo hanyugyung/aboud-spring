@@ -14,14 +14,11 @@ public class SampleServiceTest {
     @Test
     public void circuit_breaker_테스트() {
 
-        for(int i = 0; i < 20; i++) {
-            try {
-                sampleService.method1(i);
-            } catch (RuntimeException e) {
-                System.out.println(e.getMessage());
-            }
-
+        // 20번 호출 중 실패비율 설정값에 의해 input 11 부터는 회로가 열린다
+        for(int i = 1; i <= 20; i++) {
+            sampleService.method1(i);
         }
+
     }
 
 
